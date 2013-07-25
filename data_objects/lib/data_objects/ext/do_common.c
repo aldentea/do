@@ -458,6 +458,32 @@ void data_objects_common_init(void) {
   tzset();
 }
 
+VALUE data_objects_str_new2(const char *str, long length, int encoding, rb_encoding *internal_encoding) {
+  VALUE _string = rb_str_new2(str);
+#ifdef HAVE_RUBY_ENCODING_H
+  if(encoding != -1) {
+    rb_enc_associate_index(_string, encoding);
+  }
+  if(internal_encoding) {
+    _string = rb_str_export_to_enc(_string, internal_encoding);
+  }
+#endif
+  return _string;
+}
+
+VALUE data_objects_str_new(const char *str, long length, int encoding, rb_encoding *internal_encoding) {
+  VALUE _string = rb_str_new(str, length);
+#ifdef HAVE_RUBY_ENCODING_H
+  if(encoding != -1) {
+    rb_enc_associate_index(_string, encoding);
+  }
+  if(internal_encoding) {
+    _string = rb_str_export_to_enc(_string, internal_encoding);
+  }
+#endif
+  return _string;
+}
+
 /*
  * Common typecasting logic that can be used or overriden by Adapters.
  */
@@ -472,7 +498,7 @@ extern VALUE data_objects_typecast(const char *value, long length, const VALUE t
     return rb_cstr2inum(value, 10);
   }
   else if (type == rb_cString) {
-    return DATA_OBJECTS_STR_NEW(value, length, encoding, internal_encoding);
+    return data_objects_str_new(value, length, encoding, internal_encoding);
   }
   else if (type == rb_cFloat) {
     return rb_float_new(rb_cstr_to_dbl(value, Qfalse));
@@ -502,6 +528,6 @@ extern VALUE data_objects_typecast(const char *value, long length, const VALUE t
     return Qnil;
   }
   else {
-    return DATA_OBJECTS_STR_NEW(value, length, encoding, internal_encoding);
+    return data_objects_str_new(value, length, encoding, internal_encoding);
   }
 }

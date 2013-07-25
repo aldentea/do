@@ -20,38 +20,9 @@ typedef signed long long int do_int64;
 
 #ifdef HAVE_RUBY_ENCODING_H
 #include <ruby/encoding.h>
-#define DATA_OBJECTS_STR_NEW2(str, encoding, internal_encoding) \
-  ({ \
-    VALUE _string = rb_str_new2((const char *)str); \
-    if(encoding != -1) { \
-      rb_enc_associate_index(_string, encoding); \
-    } \
-    if(internal_encoding) { \
-      _string = rb_str_export_to_enc(_string, internal_encoding); \
-    } \
-    _string; \
-  })
-
-#define DATA_OBJECTS_STR_NEW(str, len, encoding, internal_encoding) \
-  ({ \
-    VALUE _string = rb_str_new((const char *)str, (long)len); \
-    if(encoding != -1) { \
-      rb_enc_associate_index(_string, encoding); \
-    } \
-    if(internal_encoding) { \
-      _string = rb_str_export_to_enc(_string, internal_encoding); \
-    } \
-    _string; \
-  })
-
-#else
-
-#define DATA_OBJECTS_STR_NEW2(str, encoding, internal_encoding) \
-  rb_str_new2((const char *)str)
-
-#define DATA_OBJECTS_STR_NEW(str, len, encoding, internal_encoding) \
-  rb_str_new((const char *)str, (long)len)
 #endif
+extern VALUE data_objects_str_new2(const char *str, long length, int encoding, rb_encoding *internal_encoding);
+extern VALUE data_objects_str_new(const char *str, long length, int encoding, rb_encoding *internal_encoding);
 
 // To store rb_intern values
 extern ID DO_ID_NEW;
