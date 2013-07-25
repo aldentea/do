@@ -13,23 +13,19 @@ VALUE do_sqlite3_cExtension_enable_load_extension(VALUE self, VALUE on) {
   VALUE id_connection = rb_intern("connection");
   VALUE connection = rb_funcall(self, id_connection, 0);
 
-  if (connection == Qnil) { return Qfalse; }
-
   // Retrieve the actual connection from the
   VALUE sqlite3_connection = rb_iv_get(connection, "@connection");
-
-  if (sqlite3_connection == Qnil) { return Qfalse; }
-
   sqlite3 *db;
+  int status;
 
+  if (connection == Qnil) { return Qfalse; }
+  if (sqlite3_connection == Qnil) { return Qfalse; }
   Data_Get_Struct(sqlite3_connection, sqlite3, db);
-
-
   if (!(db = DATA_PTR(connection))) {
     return Qfalse;
   }
 
-  int status = sqlite3_enable_load_extension(db, on == Qtrue ? 1 : 0);
+  status = sqlite3_enable_load_extension(db, on == Qtrue ? 1 : 0);
 
   if (status != SQLITE_OK) {
     rb_raise(eDO_ConnectionError, "Couldn't enable extension loading");
@@ -45,28 +41,25 @@ VALUE do_sqlite3_cExtension_load_extension(VALUE self, VALUE path) {
 #ifdef HAVE_SQLITE3_ENABLE_LOAD_EXTENSION
   VALUE connection = rb_iv_get(self, "@connection");
 
-  if (connection == Qnil) { return Qfalse; }
-
   // Retrieve the actual connection from the object
   VALUE sqlite3_connection = rb_iv_get(connection, "@connection");
-
-  if (sqlite3_connection == Qnil) { return Qfalse; }
-
   sqlite3 *db;
-
-  Data_Get_Struct(sqlite3_connection, sqlite3, db);
-
   const char *extension_path  = rb_str_ptr_readonly(path);
   char *errmsg = sqlite3_malloc(1024);
+  int status;
+  VALUE errexp;
 
+  if (connection == Qnil) { return Qfalse; }
+  if (sqlite3_connection == Qnil) { return Qfalse; }
+  Data_Get_Struct(sqlite3_connection, sqlite3, db);
   if (!errmsg) {
     return Qfalse;
   }
 
-  int status = sqlite3_load_extension(db, extension_path, 0, &errmsg);
+  status = sqlite3_load_extension(db, extension_path, 0, &errmsg);
 
   if (status != SQLITE_OK) {
-    VALUE errexp = rb_exc_new2(eDO_ConnectionError, errmsg);
+    errexp = rb_exc_new2(eDO_ConnectionError, errmsg);
 
     sqlite3_free(errmsg);
     rb_exc_raise(errexp);
