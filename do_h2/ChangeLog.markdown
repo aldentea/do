@@ -1,3 +1,19 @@
+## 0.10.17 2016-01-24
+
+No changes
+
+## 0.10.16 2015-05-17
+
+No changes
+
+## 0.10.15 2015-02-15
+
+No changes
+
+## 0.10.14 2014-02-13
+
+* Don't do DNS lookup in transaction loading
+
 ## 0.10.13 2013-05-27
 
 No changes

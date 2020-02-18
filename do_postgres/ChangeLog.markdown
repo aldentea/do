@@ -1,3 +1,23 @@
+## 0.10.17 2016-01-24
+
+* Fix memory leak
+* Fix bug with DateTime and wrong timezone offsets  
+
+## 0.10.16 2015-05-17
+
+* Fix compile issue with do\_postgres on stock OS X Ruby
+
+## 0.10.15 2015-02-15
+
+* Ruby 2.2 support
+* Double after free fix in do\_postgres
+* Windows support on 2.1.x and 2.2.x
+
+## 0.10.14 2014-02-13
+
+* Don't do DNS lookup in transaction loading
+* Set datestyle to ISO
+
 ## 0.10.13 2013-05-27
 
 * Fix segfault on invalid API usage

@@ -32,11 +32,26 @@
 #endif
 
 
+#ifndef HAVE_RB_THREAD_FD_SELECT
+#define rb_fdset_t fd_set
+#define rb_fd_isset(n, f) FD_ISSET(n, f)
+#define rb_fd_init(f) FD_ZERO(f)
+#define rb_fd_zero(f)  FD_ZERO(f)
+#define rb_fd_set(n, f)  FD_SET(n, f)
+#define rb_fd_clr(n, f) FD_CLR(n, f)
+#define rb_fd_term(f)
+#define rb_thread_fd_select rb_thread_select
+#endif
+
+
 #include <ruby.h>
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
 #include <time.h>
+#ifndef _WIN32
+#include <sys/time.h>
+#endif
 #include "error.h"
 #include "compat.h"
 
@@ -99,13 +114,14 @@ VALUE do_postgres_typecast(const char *value, long length, const VALUE type, int
 }
 
 void do_postgres_raise_error(VALUE self, PGresult *result, VALUE query) {
-  const char *message = PQresultErrorMessage(result);
+  VALUE message = rb_str_new2(PQresultErrorMessage(result));
   char *sql_state = PQresultErrorField(result, PG_DIAG_SQLSTATE);
   int postgres_errno = MAKE_SQLSTATE(sql_state[0], sql_state[1], sql_state[2], sql_state[3], sql_state[4]);
+  VALUE str = rb_str_new2(sql_state);
 
   PQclear(result);
 
-  data_objects_raise_error(self, do_postgres_errors, postgres_errno, message, query, rb_str_new2(sql_state));
+  data_objects_raise_error(self, do_postgres_errors, postgres_errno, message, query, str);
 }
 
 /* ====== Public API ======= */
@@ -269,14 +285,15 @@ PGresult * do_postgres_cCommand_execute_async(VALUE self, VALUE connection, PGco
   }
 
   int socket_fd = PQsocket(db);
-  fd_set rset;
+  rb_fdset_t rset;
+  rb_fd_init(&rset);
+  rb_fd_set(socket_fd, &rset);
 
   while (1) {
-    FD_ZERO(&rset);
-    FD_SET(socket_fd, &rset);
-    retval = rb_thread_select(socket_fd + 1, &rset, NULL, NULL, NULL);
+    retval = rb_thread_fd_select(socket_fd + 1, &rset, NULL, NULL, NULL);
 
     if (retval < 0) {
+      rb_fd_term(&rset);
       rb_sys_fail(0);
     }
 
@@ -285,6 +302,7 @@ PGresult * do_postgres_cCommand_execute_async(VALUE self, VALUE connection, PGco
     }
 
     if (PQconsumeInput(db) == 0) {
+      rb_fd_term(&rset);
       rb_raise(eDO_ConnectionError, "%s", PQerrorMessage(db));
     }
 
@@ -293,6 +311,7 @@ PGresult * do_postgres_cCommand_execute_async(VALUE self, VALUE connection, PGco
     }
   }
 
+  rb_fd_term(&rset);
   data_objects_debug(connection, query, &start);
   return PQgetResult(db);
 }
@@ -440,6 +459,7 @@ void do_postgres_full_connect(VALUE self, PGconn *db) {
   const char *backslash_off = "SET backslash_quote = off";
   const char *standard_strings_on = "SET standard_conforming_strings = on";
   const char *warning_messages = "SET client_min_messages = warning";
+  const char *date_format = "SET datestyle = ISO";
   VALUE r_options;
 
   r_options = rb_str_new2(backslash_off);
@@ -457,6 +477,13 @@ void do_postgres_full_connect(VALUE self, PGconn *db) {
   }
 
   r_options = rb_str_new2(warning_messages);
+  result = do_postgres_cCommand_execute(Qnil, self, db, r_options);
+
+  if (PQresultStatus(result) != PGRES_COMMAND_OK) {
+    rb_warn("%s", PQresultErrorMessage(result));
+  }
+
+  r_options = rb_str_new2(date_format);
   result = do_postgres_cCommand_execute(Qnil, self, db, r_options);
 
   if (PQresultStatus(result) != PGRES_COMMAND_OK) {
@@ -516,14 +543,14 @@ VALUE do_postgres_cCommand_execute_non_query(int argc, VALUE *argv, VALUE self) 
       insert_id = Qnil;
     }
     else {
-      insert_id = INT2NUM(atoi(PQgetvalue(response, 0, 0)));
+      insert_id = rb_cstr_to_inum(PQgetvalue(response, 0, 0), 10, 0);
     }
 
-    affected_rows = INT2NUM(atoi(PQcmdTuples(response)));
+    affected_rows = rb_cstr_to_inum(PQcmdTuples(response), 10, 0);
   }
   else if (status == PGRES_COMMAND_OK) {
     insert_id = Qnil;
-    affected_rows = INT2NUM(atoi(PQcmdTuples(response)));
+    affected_rows = rb_cstr_to_inum(PQcmdTuples(response), 10, 0);
   }
   else {
     do_postgres_raise_error(self, response, query);

@@ -1,5 +1,8 @@
 #include <ruby.h>
 #include <time.h>
+#ifndef _WIN32
+#include <sys/time.h>
+#endif
 #include <string.h>
 
 #include <mysql.h>
@@ -20,6 +23,17 @@
 #define do_mysql_cCommand_execute do_mysql_cCommand_execute_sync
 #else
 #define do_mysql_cCommand_execute do_mysql_cCommand_execute_async
+#endif
+
+#ifndef HAVE_RB_THREAD_FD_SELECT
+#define rb_fdset_t fd_set
+#define rb_fd_isset(n, f) FD_ISSET(n, f)
+#define rb_fd_init(f) FD_ZERO(f)
+#define rb_fd_zero(f)  FD_ZERO(f)
+#define rb_fd_set(n, f)  FD_SET(n, f)
+#define rb_fd_clr(n, f) FD_CLR(n, f)
+#define rb_fd_term(f)
+#define rb_thread_fd_select rb_thread_select
 #endif
 
 #define CHECK_AND_RAISE(mysql_result_value, query) if (0 != mysql_result_value) { do_mysql_raise_error(self, db, query); }
@@ -105,7 +119,7 @@ VALUE do_mysql_typecast(const char *value, long length, const VALUE type, int en
 
 void do_mysql_raise_error(VALUE self, MYSQL *db, VALUE query) {
   int errnum = mysql_errno(db);
-  const char *message = mysql_error(db);
+  VALUE message = rb_str_new2(mysql_error(db));
   VALUE sql_state = Qnil;
 
 #ifdef HAVE_MYSQL_SQLSTATE
@@ -154,15 +168,16 @@ MYSQL_RES *do_mysql_cCommand_execute_async(VALUE self, VALUE connection, MYSQL *
   CHECK_AND_RAISE(retval, query);
 
   int socket_fd = db->net.fd;
-  fd_set rset;
+  rb_fdset_t rset;
+  rb_fd_init(&rset);
+  rb_fd_set(socket_fd, &rset);
 
   while (1) {
-    FD_ZERO(&rset);
-    FD_SET(socket_fd, &rset);
 
-    retval = rb_thread_select(socket_fd + 1, &rset, NULL, NULL, NULL);
+    retval = rb_thread_fd_select(socket_fd + 1, &rset, NULL, NULL, NULL);
 
     if (retval < 0) {
+      rb_fd_term(&rset);
       rb_sys_fail(0);
     }
 
@@ -174,6 +189,7 @@ MYSQL_RES *do_mysql_cCommand_execute_async(VALUE self, VALUE connection, MYSQL *
       break;
     }
   }
+  rb_fd_term(&rset);
 
   retval = mysql_read_query_result(db);
   CHECK_AND_RAISE(retval, query);
@@ -318,7 +334,11 @@ void do_mysql_full_connect(VALUE self, MYSQL *db) {
     }
     else {
 #ifdef HAVE_RUBY_ENCODING_H
-      rb_iv_set(self, "@encoding_id", INT2FIX(rb_enc_find_index(rb_str_ptr_readonly(encoding))));
+      const char* ruby_encoding = rb_str_ptr_readonly(encoding);
+      if (strcasecmp("UTF-8-MB4", ruby_encoding) == 0) {
+        ruby_encoding = "UTF-8";
+      }
+      rb_iv_set(self, "@encoding_id", INT2FIX(rb_enc_find_index(ruby_encoding)));
 #endif
 
       rb_iv_set(self, "@my_encoding", my_encoding);
@@ -454,7 +474,16 @@ VALUE do_mysql_cConnection_quote_string(VALUE self, VALUE string) {
   VALUE result;
 
   // Escape 'source' using the current encoding in use on the conection 'db'
+#ifdef HAVE_MYSQL_REAL_ESCAPE_STRING_QUOTE
+  quoted_length = mysql_real_escape_string_quote(db, escaped + 1, source, source_len, '\'');
+#else
   quoted_length = mysql_real_escape_string(db, escaped + 1, source, source_len);
+#endif
+
+  if (quoted_length == (unsigned long)-1) {
+    free(escaped);
+    rb_raise(rb_eArgError, "Failed to quote string. Make sure to (re)compile do_mysql against the correct libmysqlclient");
+  }
 
   // Wrap the escaped string in single-quotes, this is DO's convention
   escaped[0] = escaped[quoted_length + 1] = '\'';

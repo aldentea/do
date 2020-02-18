@@ -3,6 +3,9 @@
 #include <math.h>
 #include <ctype.h>
 #include <time.h>
+#ifndef _WIN32
+#include <sys/time.h>
+#endif
 
 #include "do_common.h"
 
@@ -63,7 +66,7 @@ void data_objects_debug(VALUE connection, VALUE string, struct timeval *start) {
   rb_funcall(connection, DO_ID_LOG, 1, message);
 }
 
-void data_objects_raise_error(VALUE self, const struct errcodes *errors, int errnum, const char *message, VALUE query, VALUE state) {
+void data_objects_raise_error(VALUE self, const struct errcodes *errors, int errnum, VALUE message, VALUE query, VALUE state) {
   const char *exception_type = "SQLError";
   const struct errcodes *e;
   VALUE uri, exception;
@@ -82,7 +85,7 @@ void data_objects_raise_error(VALUE self, const struct errcodes *errors, int err
     data_objects_const_get(mDO, exception_type),
     DO_ID_NEW,
     5,
-    rb_str_new2(message),
+    message,
     INT2NUM(errnum),
     state,
     query,
@@ -193,7 +196,7 @@ VALUE data_objects_parse_date(const char *date) {
 }
 
 VALUE data_objects_parse_time(const char *date) {
-  static char const* const _fmt_datetime = "%4d-%2d-%2d %2d:%2d:%2d%7lf";
+  static char const* const _fmt_datetime = "%4d-%2d-%2d%*c%2d:%2d:%2d%7lf";
   int year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0, usec = 0;
   double subsec = 0;
 
