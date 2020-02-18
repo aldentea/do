@@ -95,12 +95,12 @@ describe "DataObjects::Pooling" do
   it "should track the initialized pools" do
     bob = Person.new('Bob') # Ensure the pool is "primed"
     expect(bob.name).to eq('Bob')
-    bob.instance_variable_get(:@__pool).should_not be_nil
+    expect(bob.instance_variable_get(:@__pool)).not_to eq(nil)
     expect(Person.__pools.size).to eq(1)
     bob.release
     expect(Person.__pools.size).to eq(1)
 
-    DataObjects::Pooling::pools.should_not be_empty
+    expect(DataObjects::Pooling::pools).not_to be_empty
 
     sleep(1.2)
 
@@ -112,7 +112,7 @@ describe "DataObjects::Pooling" do
 
   it "should allow you to overwrite Class#new" do
     bob = Overwriter.new('Bob')
-    bob.should be_overwritten
+    expect(bob).to be_overwritten
     bob.release
   end
 
@@ -123,12 +123,12 @@ describe "DataObjects::Pooling" do
       bob.release
     end
 
-    lambda do
+    expect(lambda do
       bob = Person.new('Bob')
       t1.join
       bob.release
     #end.should_not raise_error(DataObjects::Pooling::InvalidResourceError)
-    end.should_not raise_error
+    end).not_to raise_error
   end
 
   it "should allow you to flush a pool" do
@@ -138,11 +138,11 @@ describe "DataObjects::Pooling" do
 
     bob.name.should == 'Bob'
 
-    Overwriter.__pools[['Bob']].size.should == 2
+    expect(Overwriter.__pools[['Bob']].size).to eq(2)
     Overwriter.__pools[['Bob']].flush!
-    Overwriter.__pools[['Bob']].size.should == 0
+    expect(Overwriter.__pools[['Bob']].size).to be(0)
 
-    bob.name.should be_nil
+    expect(bob.name).to be_nil
   end
 
   it "should wake up the scavenger thread when exiting" do
@@ -150,14 +150,14 @@ describe "DataObjects::Pooling" do
     bob.release
     DataObjects.exiting = true
     sleep(1)
-    DataObjects::Pooling.scavenger?.should be_falsey
+    expect(DataObjects::Pooling.scavenger?).to be_falsey
   end
 
   it "should be able to detach an instance from the pool" do
     bob = Person.new('Bob')
-    Person.__pools[['Bob']].size.should == 1
+    expect(Person.__pools[['Bob']].size).to eq(1)
     bob.detach
-    Person.__pools[['Bob']].size.should == 0
+    expect(Person.__pools[['Bob']].size).to eq(1)
   end
 
 end

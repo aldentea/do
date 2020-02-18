@@ -15,20 +15,20 @@ describe DataObjects::Transaction do
 
   describe "#initialize" do
     it "should provide a connection" do
-      @transaction.connection.should == @connection
+      expect(@transaction.connection).to eq(@connection)
     end
     it "should provide an id" do
-      @transaction.id.should_not == nil
+      expect(@transaction.id).not_to eq(nil)
     end
     it "should provide a unique id" do
 	    expect(DataObjects::Connection).to receive(:new).with("mock://mock/mock2").once.and_return(@connection)
-      @transaction.id.should_not == DataObjects::Transaction.new("mock://mock/mock2").id
+      expect(@transaction.id).not_to eq(DataObjects::Transaction.new("mock://mock/mock2").id)
     end
   end
   describe "#close" do
     it "should close its connection" do
-      @connection.should_receive(:close).once
-      lambda { @transaction.close }.should_not raise_error(DataObjects::TransactionError)
+      expect(@connection).to receive(:close).once
+      expect(lambda { @transaction.close }).not_to raise_error(DataObjects::TransactionError)
     end
   end
   [:prepare, :commit_prepared, :rollback_prepared].each do |meth|
