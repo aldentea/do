@@ -136,7 +136,7 @@ describe "DataObjects::Pooling" do
     Overwriter.new('Bob').release
     bob.release
 
-    bob.name.should == 'Bob'
+    expect(bob.name).to eq('Bob')
 
     expect(Overwriter.__pools[['Bob']].size).to eq(2)
     Overwriter.__pools[['Bob']].flush!
@@ -157,7 +157,7 @@ describe "DataObjects::Pooling" do
     bob = Person.new('Bob')
     expect(Person.__pools[['Bob']].size).to eq(1)
     bob.detach
-    expect(Person.__pools[['Bob']].size).to eq(1)
+    expect(Person.__pools[['Bob']].size).to eq(0)
   end
 
 end
