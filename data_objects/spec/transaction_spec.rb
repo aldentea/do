@@ -10,7 +10,7 @@ describe DataObjects::Transaction do
   end
 
   it "should have a HOST constant" do
-    DataObjects::Transaction::HOST.should_not == nil?
+	  expect(DataObjects::Transaction::HOST).not_to eq(nil?)
   end
 
   describe "#initialize" do
