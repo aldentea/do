@@ -3,8 +3,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper'))
 describe DataObjects::Transaction do
 
   before :each do
-    @connection = mock("connection")
-    DataObjects::Connection.should_receive(:new).with("mock://mock/mock").once.and_return(@connection)
+    @connection = double("connection")
+    expect(DataObjects::Connection).to receive(:new).with("mock://mock/mock").once.and_return(@connection)
+    #DataObjects::Connection.should_receive(:new).with("mock://mock/mock").once.and_return(@connection)
     @transaction = DataObjects::Transaction.new("mock://mock/mock")
   end
 
@@ -20,7 +21,7 @@ describe DataObjects::Transaction do
       @transaction.id.should_not == nil
     end
     it "should provide a unique id" do
-      DataObjects::Connection.should_receive(:new).with("mock://mock/mock2").once.and_return(@connection)
+	    expect(DataObjects::Connection).to receive(:new).with("mock://mock/mock2").once.and_return(@connection)
       @transaction.id.should_not == DataObjects::Transaction.new("mock://mock/mock2").id
     end
   end
@@ -32,7 +33,7 @@ describe DataObjects::Transaction do
   end
   [:prepare, :commit_prepared, :rollback_prepared].each do |meth|
     it "should raise NotImplementedError on #{meth}" do
-      lambda { @transaction.send(meth) }.should raise_error(NotImplementedError)
+	    expect(lambda { @transaction.send(meth) }).to raise_error(NotImplementedError)
     end
   end
 

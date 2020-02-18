@@ -14,7 +14,7 @@ describe DataObjects::Connection do
     it { should respond_to(:dispose)        }
     it { should respond_to(:create_command) }
 
-    its(:to_s)  { should == 'mock://localhost' }
+    it { expect(subject.to_s).to eq('mock://localhost') }
   end
 
   describe 'initialization' do
@@ -25,7 +25,8 @@ describe DataObjects::Connection do
       it { should be_kind_of(DataObjects::Mock::Connection) }
       it { should be_kind_of(DataObjects::Pooling)          }
 
-      its(:to_s) { should == 'mock://localhost/database' }
+      #its(:to_s) { should == 'mock://localhost/database' }
+      it { expect(subject.to_s).to eq('mock://localhost/database') }
     end
 
     [

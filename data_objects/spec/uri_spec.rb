@@ -6,14 +6,14 @@ describe DataObjects::URI do
   context 'parsing parts' do
     let(:uri) { 'mock://username:password@localhost:12345/path?encoding=utf8#fragment'  }
 
-    its(:scheme)    { should == 'mock'      }
-    its(:user)      { should == 'username'  }
-    its(:password)  { should == 'password'  }
-    its(:host)      { should == 'localhost' }
-    its(:port)      { should == 12345       }
-    its(:path)      { should == '/path'     }
-    its(:query)     { should == { 'encoding' => 'utf8' } }
-    its(:fragment)  { should == 'fragment'  }
+    it { expect(subject.scheme).to eq('mock') }
+    it { expect(subject.user).to eq('username') }
+    it { expect(subject.password).to eq('password') }
+    it { expect(subject.host).to eq('localhost') }
+    it { expect(subject.port).to eq(12345) }
+    it { expect(subject.path).to eq('/path') }
+    it { expect(subject.query).to eq({'encoding' => 'utf8'}) }
+    it { expect(subject.fragment).to eq('fragment') }
 
     it 'should provide a correct string representation' do
       subject.to_s.should == 'mock://username@localhost:12345/path?encoding=utf8#fragment'
@@ -23,15 +23,15 @@ describe DataObjects::URI do
   context 'parsing JDBC URL parts' do
     let(:uri) { 'jdbc:mock://username:password@localhost:12345/path?encoding=utf8#fragment'  }
 
-    its(:scheme)    { should == 'jdbc'      }
-    its(:subscheme) { should == 'mock'      }
-    its(:user)      { should == 'username'  }
-    its(:password)  { should == 'password'  }
-    its(:host)      { should == 'localhost' }
-    its(:port)      { should == 12345       }
-    its(:path)      { should == '/path'     }
-    its(:query)     { should == { 'encoding' => 'utf8' } }
-    its(:fragment)  { should == 'fragment'  }
+    it { expect(subject.scheme).to eq('jdbc') }
+    it { expect(subject.subscheme).to eq('mock') }
+    it { expect(subject.user).to eq('username') }
+    it { expect(subject.password).to eq('password') }
+    it { expect(subject.host).to eq('localhost') }
+    it { expect(subject.port).to eq(12345) }
+    it { expect(subject.path).to eq('/path') }
+    it { expect(subject.query).to eq({'encoding' => 'utf8'}) }
+    it { expect(subject.fragment).to eq('fragment') }
 
     it 'should provide a correct string representation' do
       subject.to_s.should == 'jdbc:mock://username@localhost:12345/path?encoding=utf8#fragment'
@@ -41,8 +41,8 @@ describe DataObjects::URI do
   context 'parsing parts' do
     let(:uri) { 'java:comp/env/jdbc/TestDataSource'  }
 
-    its(:scheme)    { should == 'java' }
-    its(:path)      { should == 'comp/env/jdbc/TestDataSource'     }
+    it { expect(subject.scheme).to eq('java') }
+    it { expect(subject.path).to eq('comp/env/jdbc/TestDataSource') }
 
     it 'should provide a correct string representation' do
       subject.to_s.should == 'java:comp/env/jdbc/TestDataSource'

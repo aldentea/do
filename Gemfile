@@ -3,7 +3,8 @@ source :rubygems
 gem 'addressable', '~> 2.1'
 gem 'rake'
 gem 'rake-compiler'
-gem 'rspec', '~> 2.5'
+#gem 'rspec', '~> 2.5'
+gem 'rspec'
 
 platforms :jruby do
   gem 'jdbc-mysql',    '>=5.0.4'

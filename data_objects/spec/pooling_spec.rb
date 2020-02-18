@@ -80,7 +80,7 @@ describe "DataObjects::Pooling" do
     ted = Person.new('Ted')
 
     Person.__pools.each do |args, pool|
-      pool.size.should == 1
+	    expect(pool.size).to eq(1)
     end
 
     bob.release
@@ -88,17 +88,17 @@ describe "DataObjects::Pooling" do
     ted.release
 
     Person.__pools.each do |args, pool|
-      pool.size.should == 1
+	    expect(pool.size).to eq(1)
     end
   end
 
   it "should track the initialized pools" do
     bob = Person.new('Bob') # Ensure the pool is "primed"
-    bob.name.should == 'Bob'
+    expect(bob.name).to eq('Bob')
     bob.instance_variable_get(:@__pool).should_not be_nil
-    Person.__pools.size.should == 1
+    expect(Person.__pools.size).to eq(1)
     bob.release
-    Person.__pools.size.should == 1
+    expect(Person.__pools.size).to eq(1)
 
     DataObjects::Pooling::pools.should_not be_empty
 
@@ -107,7 +107,7 @@ describe "DataObjects::Pooling" do
     # NOTE: This assertion is commented out, as our MockConnection objects are
     #       currently in the pool.
     # DataObjects::Pooling::pools.should be_empty
-    bob.name.should be_nil
+    expect(bob.name).to eq(nil)
   end
 
   it "should allow you to overwrite Class#new" do
@@ -127,7 +127,8 @@ describe "DataObjects::Pooling" do
       bob = Person.new('Bob')
       t1.join
       bob.release
-    end.should_not raise_error(DataObjects::Pooling::InvalidResourceError)
+    #end.should_not raise_error(DataObjects::Pooling::InvalidResourceError)
+    end.should_not raise_error
   end
 
   it "should allow you to flush a pool" do
@@ -149,7 +150,7 @@ describe "DataObjects::Pooling" do
     bob.release
     DataObjects.exiting = true
     sleep(1)
-    DataObjects::Pooling.scavenger?.should be_false
+    DataObjects::Pooling.scavenger?.should be_falsey
   end
 
   it "should be able to detach an instance from the pool" do
