@@ -12,7 +12,7 @@ describe DataObjects::Result do
 
     it 'should provide the number of affected rows' do
       should respond_to(:to_i)
-      subject.to_i.should == 0
+      expect(subject.to_i).to eq(0)
     end
 
     it 'should provide the id of the inserted row' do
