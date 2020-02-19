@@ -28,7 +28,7 @@ describe DataObjects::Transaction do
   describe "#close" do
     it "should close its connection" do
       expect(@connection).to receive(:close).once
-      expect(lambda { @transaction.close }).not_to raise_error(DataObjects::TransactionError)
+      expect(lambda { @transaction.close }).not_to raise_error
     end
   end
   [:prepare, :commit_prepared, :rollback_prepared].each do |meth|
