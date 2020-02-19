@@ -16,7 +16,7 @@ describe DataObjects::URI do
     it { expect(subject.fragment).to eq('fragment') }
 
     it 'should provide a correct string representation' do
-      subject.to_s.should == 'mock://username@localhost:12345/path?encoding=utf8#fragment'
+      expect(subject.to_s).to eq('mock://username@localhost:12345/path?encoding=utf8#fragment')
     end
   end
 
@@ -34,7 +34,7 @@ describe DataObjects::URI do
     it { expect(subject.fragment).to eq('fragment') }
 
     it 'should provide a correct string representation' do
-      subject.to_s.should == 'jdbc:mock://username@localhost:12345/path?encoding=utf8#fragment'
+      expect(subject.to_s).to eq('jdbc:mock://username@localhost:12345/path?encoding=utf8#fragment')
     end
   end
 
@@ -45,7 +45,7 @@ describe DataObjects::URI do
     it { expect(subject.path).to eq('comp/env/jdbc/TestDataSource') }
 
     it 'should provide a correct string representation' do
-      subject.to_s.should == 'java:comp/env/jdbc/TestDataSource'
+      expect(subject.to_s).to eq('java:comp/env/jdbc/TestDataSource')
     end
   end
 
