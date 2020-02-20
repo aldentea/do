@@ -21,6 +21,7 @@ ID DO_ID_RATIONAL;
 ID DO_ID_ESCAPE;
 ID DO_ID_STRFTIME;
 ID DO_ID_LOG;
+ID DO_ID_BIGDECIMAL;
 
 // Reference to Extlib module
 VALUE mExtlib;
@@ -43,6 +44,7 @@ VALUE eDO_DataError;
 VALUE rb_cDate;
 VALUE rb_cDateTime;
 VALUE rb_cBigDecimal;
+// VALUE rb_mKernel;
 
 /*
  * Common Functions
@@ -421,6 +423,7 @@ void data_objects_common_init(void) {
   DO_ID_ESCAPE = rb_intern("escape_sql");
   DO_ID_STRFTIME = rb_intern("strftime");
   DO_ID_LOG = rb_intern("log");
+  DO_ID_BIGDECIMAL = rb_intern("BigDecimal");
 
   // Get references to the Extlib module
   mExtlib = data_objects_const_get(rb_mKernel, "Extlib");
@@ -446,11 +449,13 @@ void data_objects_common_init(void) {
   rb_global_variable(&DO_ID_ESCAPE);
   rb_global_variable(&DO_ID_LOG);
   rb_global_variable(&DO_ID_NEW);
+  rb_global_variable(&DO_ID_BIGDECIMAL);
 
   rb_global_variable(&rb_cDate);
   rb_global_variable(&rb_cDateTime);
   rb_global_variable(&rb_cBigDecimal);
   rb_global_variable(&rb_cByteArray);
+//  rb_global_variable(&rb_mKernel);
 
   rb_global_variable(&mDO);
   rb_global_variable(&cDO_Logger_Message);
@@ -481,7 +486,8 @@ extern VALUE data_objects_typecast(const char *value, long length, const VALUE t
     return rb_float_new(rb_cstr_to_dbl(value, Qfalse));
   }
   else if (type == rb_cBigDecimal) {
-    return rb_funcall(rb_cBigDecimal, DO_ID_NEW, 1, rb_str_new(value, length));
+    /* return rb_funcall(rb_cBigDecimal, DO_ID_NEW, 1, rb_str_new(value, length)); */
+    return rb_funcall(rb_mKernel, DO_ID_BIGDECIMAL, 1, rb_str_new(value, length));
   }
   else if (type == rb_cDate) {
     return data_objects_parse_date(value);

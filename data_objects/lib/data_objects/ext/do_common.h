@@ -61,6 +61,7 @@ extern ID DO_ID_RATIONAL;
 extern ID DO_ID_ESCAPE;
 extern ID DO_ID_STRFTIME;
 extern ID DO_ID_LOG;
+extern ID DO_ID_BIGDECIMAL;
 
 // Reference to Extlib module
 extern VALUE mExtlib;

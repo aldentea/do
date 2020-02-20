@@ -67,7 +67,8 @@ VALUE do_sqlite3_typecast(sqlite3_stmt *stmt, int i, VALUE type, int encoding) {
     return rb_float_new(sqlite3_column_double(stmt, i));
   }
   else if (type == rb_cBigDecimal) {
-    return rb_funcall(rb_cBigDecimal, DO_ID_NEW, 1, rb_str_new((char*)sqlite3_column_text(stmt, i), length));
+    /* return rb_funcall(rb_cBigDecimal, DO_ID_NEW, 1, rb_str_new((char*)sqlite3_column_text(stmt, i), length)); */
+    return rb_funcall(rb_mKernel, DO_ID_BIGDECIMAL, 1, rb_str_new((char*)sqlite3_column_text(stmt, i), length));
   }
   else if (type == rb_cDate) {
     return data_objects_parse_date((char*)sqlite3_column_text(stmt, i));
