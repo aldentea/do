@@ -27,12 +27,12 @@ shared_examples_for 'supporting Integer' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Integer)
+        expect(@values.first).to be_kind_of(Integer)
       end
 
       it 'should return the correct result' do
         #Some of the drivers starts autoincrementation from 0 not 1
-        @values.first.should satisfy { |val| val == 1 or val == 0 }
+        expect(@values.first).to satisfy { |val| val == 1 or val == 0 }
       end
 
     end
@@ -52,11 +52,11 @@ shared_examples_for 'supporting Integer' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Integer)
+        expect(@values.first).to be_kind_of(Integer)
       end
 
       it 'should return the correct result' do
-        @values.first.should == 13
+        expect(@values.first).to eq 13
       end
 
     end
@@ -76,7 +76,7 @@ shared_examples_for 'supporting Integer' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == 2
+      expect(@values.first).to eq 2
     end
 
   end
@@ -95,7 +95,7 @@ shared_examples_for 'supporting Integer' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == 2147483648
+      expect(@values.first).to eq 2147483648
     end
 
   end

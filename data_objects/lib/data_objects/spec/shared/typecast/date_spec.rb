@@ -29,11 +29,11 @@ shared_examples_for 'supporting Date' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Date)
+        expect(@values.first).to be_kind_of(Date)
       end
 
       it 'should return the correct result' do
-        @values.first.should == Date.civil(2008, 2, 14)
+        expect(@values.first).to eq Date.civil(2008, 2, 14)
       end
 
     end
@@ -53,11 +53,11 @@ shared_examples_for 'supporting Date' do
       end
 
       it 'should return a nil class' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return nil' do
-       @values.first.should be_nil
+       expect(@values.first).to be_nil
       end
 
     end
@@ -78,7 +78,7 @@ shared_examples_for 'supporting Date' do
 
     it 'should return the correct entry' do
       #Some of the drivers starts autoincrementation from 0 not 1
-      @values.first.should satisfy { |val| val == 1 or val == 0 }
+      expect(@values.first).to satisfy { |val| val == 1 or val == 0 }
     end
 
   end
@@ -114,11 +114,11 @@ shared_examples_for 'supporting Date autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Date)
+        expect(@values.first).to be_kind_of(Date)
       end
 
       it 'should return the correct result' do
-        @values.first.should == Date.civil(2008, 2, 14)
+        expect(@values.first).to eq Date.civil(2008, 2, 14)
       end
 
     end

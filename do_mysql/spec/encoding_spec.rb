@@ -16,7 +16,7 @@ describe DataObjects::Mysql::Connection do
 
       after { @utf8mb4_connection.close }
 
-      it { @utf8mb4_connection.character_set.should == 'UTF-8-MB4' }
+      it { expect(@utf8mb4_connection.character_set).to eq 'UTF-8-MB4' }
 
       describe 'writing a multibyte String' do
         it 'should write a multibyte String' do
@@ -37,9 +37,9 @@ describe DataObjects::Mysql::Connection do
         end
 
         it 'should return UTF-8 encoded String' do
-          @values.first.should be_kind_of(String)
-          @values.first.encoding.name.should == 'UTF-8'
-          @values.first.should == "😀"
+          expect(@values.first).to be_kind_of(String)
+          expect(@values.first.encoding.name).to eq 'UTF-8'
+          expect(@values.first).to eq "😀"
         end
       end
     end

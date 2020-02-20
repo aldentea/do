@@ -28,33 +28,27 @@ describe DataObjects::Mysql::Connection do
     describe 'connecting with SSL' do
 
       it 'should raise an error when passed ssl=true' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?ssl=true") }.
-          should raise_error(ArgumentError)
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?ssl=true") }.to raise_error(ArgumentError)
       end
 
       it 'should raise an error when passed a nonexistent client certificate' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?ssl[client_cert]=nonexistent") }.
-          should raise_error(ArgumentError)
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?ssl[client_cert]=nonexistent") }.to raise_error(ArgumentError)
       end
 
       it 'should raise an error when passed a nonexistent client key' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?ssl[client_key]=nonexistent") }.
-          should raise_error(ArgumentError)
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?ssl[client_key]=nonexistent") }.to raise_error(ArgumentError)
       end
 
       it 'should raise an error when passed a nonexistent ca certificate' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?ssl[ca_cert]=nonexistent") }.
-          should raise_error(ArgumentError)
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?ssl[ca_cert]=nonexistent") }.to raise_error(ArgumentError)
       end
 
       it 'should connect with a specified SSL cipher' do
-        DataObjects::Connection.new("#{CONFIG.uri}?#{CONFIG.ssl}&ssl[cipher]=#{SSLHelpers::CONFIG.cipher}").
-          ssl_cipher.should == SSLHelpers::CONFIG.cipher
+        expect(DataObjects::Connection.new("#{CONFIG.uri}?#{CONFIG.ssl}&ssl[cipher]=#{SSLHelpers::CONFIG.cipher}").ssl_cipher).to eq SSLHelpers::CONFIG.cipher
       end
 
       it 'should raise an error with an invalid SSL cipher' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?#{CONFIG.ssl}&ssl[cipher]=invalid") }.
-          should raise_error
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?#{CONFIG.ssl}&ssl[cipher]=invalid") }.to raise_error
       end
 
     end

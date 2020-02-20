@@ -29,12 +29,12 @@ shared_examples_for 'supporting BigDecimal' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(BigDecimal)
+        expect(@values.first).to be_kind_of(BigDecimal)
       end
 
       it 'should return the correct result' do
         # rounding seems necessary for the jruby do_derby driver
-        @values.first.round(2).should == 10.23
+        expect(@values.first.round(2)).to eq 10.23
       end
 
     end
@@ -54,11 +54,11 @@ shared_examples_for 'supporting BigDecimal' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return the correct result' do
-       @values.first.should be_nil
+        expect(@values.first).to be_nil
       end
 
     end
@@ -78,7 +78,7 @@ shared_examples_for 'supporting BigDecimal' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == 2
+      expect(@values.first).to eq 2
     end
 
   end
@@ -114,11 +114,11 @@ shared_examples_for 'supporting BigDecimal autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(BigDecimal)
+        expect(@values.first).to be_kind_of(BigDecimal)
       end
 
       it 'should return the correct result' do
-        @values.first.should == 50.23
+        expect(@values.first).to eq 50.23
       end
 
     end

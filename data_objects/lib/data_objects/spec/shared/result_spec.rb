@@ -13,12 +13,12 @@ shared_examples_for 'a Result' do
     @connection.close
   end
 
-  it { @result.should respond_to(:affected_rows) }
+  it { expect(@result).to respond_to(:affected_rows) }
 
   describe 'affected_rows' do
 
     it 'should return the number of affected rows' do
-      @result.affected_rows.should == 1
+      expect(@result.affected_rows).to eq 1
     end
 
   end
@@ -42,11 +42,11 @@ shared_examples_for 'a Result which returns inserted key with sequences' do
       @connection.close
     end
 
-    it { @result.should respond_to(:affected_rows) }
+    it { expect(@result).to respond_to(:affected_rows) }
 
     it 'should return the insert_id' do
       # This is actually the 2nd record inserted
-      @result.insert_id.should == 2
+      expect(@result.insert_id).to eq 2
     end
 
   end
@@ -71,7 +71,7 @@ shared_examples_for 'a Result which returns nil without sequences' do
 
     it 'should return the insert_id' do
       # This is actually the 2nd record inserted
-      @result.insert_id.should be_nil
+      expect(@result.insert_id).to be_nil
     end
 
   end

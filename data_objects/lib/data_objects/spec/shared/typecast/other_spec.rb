@@ -39,7 +39,7 @@ shared_examples_for 'supporting other (unknown) type' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == 'Buy this product now!'
+      expect(@values.first).to eq 'Buy this product now!'
     end
 
   end

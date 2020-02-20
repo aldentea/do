@@ -29,11 +29,11 @@ shared_examples_for 'supporting Nil' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return the correct result' do
-        @values.first.should == nil
+        expect(@values.first).to be_nil
       end
 
     end
@@ -73,7 +73,7 @@ shared_examples_for 'supporting writing an Nil' do
       end
 
       it 'should return the correct entry' do
-        @reader.next!.should be false
+        expect(@reader.next!).to be_falsey
       end
 
     end
@@ -111,11 +111,11 @@ shared_examples_for 'supporting Nil autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return the correct result' do
-        @values.first.should == nil
+        expect(@values.first).to be_nil
       end
 
     end

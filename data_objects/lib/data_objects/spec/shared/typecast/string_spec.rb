@@ -29,11 +29,11 @@ shared_examples_for 'supporting String' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(String)
+        expect(@values.first).to be_kind_of(String)
       end
 
       it 'should return the correct result' do
-        @values.first.should == "W0000001"
+        expect(@values.first).to eq "W0000001"
       end
 
     end
@@ -53,11 +53,11 @@ shared_examples_for 'supporting String' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(String)
+        expect(@values.first).to be_kind_of(String)
       end
 
       it 'should return the correct result' do
-        @values.first.should == "0"
+        expect(@values.first).to eq "0"
       end
 
     end
@@ -78,7 +78,7 @@ shared_examples_for 'supporting String' do
 
     it 'should return the correct entry' do
       # Some of the drivers starts autoincrementation from 0 not 1
-      @values.first.should satisfy { |val| val == 1 or val == 2 }
+      expect(@values.first).to satisfy { |val| val == 1 or val == 2 }
     end
 
   end
@@ -103,7 +103,7 @@ shared_examples_for 'supporting String' do
         @command = @connection.create_command('SELECT name FROM users WHERE name = ?')
         @reader = @command.execute_reader(name)
         @reader.next!
-        @reader.values.first.should == name
+        expect(@reader.values.first).to eq name
         @reader.close
       end
 
@@ -116,7 +116,7 @@ shared_examples_for 'supporting String' do
         @command = @connection.create_command("SELECT name FROM users WHERE name = #{@n}\'#{name}\'")
         @reader = @command.execute_reader
         @reader.next!
-        @reader.values.first.should == name
+        expect(@reader.values.first).to eq name
         @reader.close
       end
 
@@ -139,7 +139,7 @@ shared_examples_for 'supporting String' do
 
     it 'should return the correct entry' do
       # Some of the drivers starts autoincrementation from 0 not 1
-      @values.first.should satisfy { |val| val == 1 or val == 2 }
+      expect(@values.first).to satisfy { |val| val == 1 or val == 2 }
     end
 
   end

@@ -29,12 +29,12 @@ shared_examples_for 'supporting Float' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Float)
+        expect(@values.first).to be_kind_of(Float)
       end
 
       it 'should return the correct result' do
        #Some of the drivers starts autoincrementation from 0 not 1
-       @values.first.should satisfy { |val| val == 1.0 or val == 0.0 }
+       expect(@values.first).to satisfy { |val| val == 1.0 or val == 0.0 }
       end
 
     end
@@ -54,11 +54,11 @@ shared_examples_for 'supporting Float' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return the correct result' do
-       @values.first.should be_nil
+        expect(@values.first).to be_nil
       end
 
     end
@@ -78,7 +78,7 @@ shared_examples_for 'supporting Float' do
 
     it 'should return the correct entry' do
       #Some of the drivers starts autoincrementation from 0 not 1
-      @values.first.should satisfy { |val| val == 1 or val == 2 }
+      expect(@values.first).to satisfy { |val| val == 1 or val == 2 }
     end
 
   end
@@ -114,13 +114,13 @@ shared_examples_for 'supporting Float autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Float)
-        @values.last.should be_kind_of(Float)
+        expect(@values.first).to be_kind_of(Float)
+        expect(@values.last).to be_kind_of(Float)
       end
 
       it 'should return the correct result' do
-        @values.first.should == 13.4
-        BigDecimal(@values.last.to_s).round(2).should == 10.23
+        expect(@values.first).to eq 13.4
+        expect(BigDecimal(@values.last.to_s).round(2)).to eq 10.23
       end
 
     end

@@ -27,7 +27,7 @@ shared_examples_for 'supporting Array' do
       while(@reader.next!) do
         counter += 1
       end
-      counter.should == 4
+      expect(counter).to eq 4
     end
 
   end

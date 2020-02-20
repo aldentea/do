@@ -29,11 +29,11 @@ shared_examples_for 'supporting Boolean' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(FalseClass)
+        expect(@values.first).to be_kind_of(FalseClass)
       end
 
       it 'should return the correct result' do
-        @values.first.should == false
+        expect(@values.first).to be false
       end
 
     end
@@ -53,11 +53,11 @@ shared_examples_for 'supporting Boolean' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(TrueClass)
+        expect(@values.first).to be_kind_of(TrueClass)
       end
 
       it 'should return the correct result' do
-       @values.first.should be true
+       expect(@values.first).to be true
       end
 
     end
@@ -77,11 +77,11 @@ shared_examples_for 'supporting Boolean' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return the correct result' do
-       @values.first.should be_nil
+        expect(@values.first).to be_nil
       end
 
     end
@@ -101,7 +101,7 @@ shared_examples_for 'supporting Boolean' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == 2
+      expect(@values.first).to eq 2
     end
 
   end
@@ -137,11 +137,11 @@ shared_examples_for 'supporting Boolean autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(FalseClass)
+        expect(@values.first).to be_kind_of(FalseClass)
       end
 
       it 'should return the correct result' do
-        @values.first.should == false
+        expect(@values.first).to be false
       end
 
     end

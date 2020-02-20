@@ -36,7 +36,7 @@ describe DataObjects::Mysql::Result do
     end
 
     it 'should return the bigint id' do
-      @result.insert_id.should == 3_000_000_001
+      expect(@result.insert_id).to eq 3_000_000_001
     end
 
   end

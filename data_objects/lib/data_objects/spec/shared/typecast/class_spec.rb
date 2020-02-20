@@ -29,11 +29,11 @@ shared_examples_for 'supporting Class' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(Class)
+        expect(@values.first).to be_kind_of(Class)
       end
 
       it 'should return the correct result' do
-        @values.first.should == String
+        expect(@values.first).to eq String
       end
 
     end
@@ -53,7 +53,7 @@ shared_examples_for 'supporting Class' do
     end
 
     it 'should return the correct entry' do
-      @values.first.should == "String"
+      expect(@values.first).to eq "String"
     end
 
   end

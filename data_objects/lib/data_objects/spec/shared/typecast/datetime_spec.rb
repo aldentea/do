@@ -31,13 +31,13 @@ shared_examples_for 'supporting DateTime' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(DateTime)
+        expect(@values.first).to be_kind_of(DateTime)
       end
 
       it 'should return the correct result' do
         date = @values.first
         local_offset = Rational(Time.local(2008, 2, 14).utc_offset, 86400)
-        date.should == DateTime.civil(2008, 2, 14, 00, 31, 12, local_offset)
+        expect(date).to eq DateTime.civil(2008, 2, 14, 00, 31, 12, local_offset)
       end
 
     end
@@ -57,11 +57,11 @@ shared_examples_for 'supporting DateTime' do
       end
 
       it 'should return a nil class' do
-        @values.first.should be_kind_of(NilClass)
+        expect(@values.first).to be_kind_of(NilClass)
       end
 
       it 'should return nil' do
-       @values.first.should be_nil
+        expect(@values.first).to be_nil
       end
 
     end
@@ -83,11 +83,11 @@ shared_examples_for 'supporting DateTime' do
       end
 
       it 'should return the correct offset in Feb' do
-        (@feb_row.first.offset * 86400).to_i.should == Time.local(2008, 2, 14, 0, 31, 12).utc_offset
+        expect((@feb_row.first.offset * 86400).to_i).to eq Time.local(2008, 2, 14, 0, 31, 12).utc_offset
       end
 
       it 'should return the correct offset in Jul' do
-        (@jul_row.first.offset * 86400).to_i.should == Time.local(2008, 7, 14, 0, 31, 12).utc_offset
+        expect((@jul_row.first.offset * 86400).to_i).to eq Time.local(2008, 7, 14, 0, 31, 12).utc_offset
       end
 
     end
@@ -109,7 +109,7 @@ shared_examples_for 'supporting DateTime' do
 
     it 'should return the correct entry' do
       #Some of the drivers starts autoincrementation from 0 not 1
-      @values.first.should satisfy { |val| val == 0 or val == 1 }
+      expect(@values.first).to satisfy { |val| val == 0 or val == 1 }
     end
 
   end
@@ -145,11 +145,11 @@ shared_examples_for 'supporting DateTime autocasting' do
       end
 
       it 'should return the correctly typed result' do
-        @values.first.should be_kind_of(DateTime)
+        expect(@values.first).to be_kind_of(DateTime)
       end
 
       it 'should return the correct result' do
-        @values.first.should == Time.local(2008, 2, 14, 00, 31, 12).send(:to_datetime)
+        expect(@values.first).to eq Time.local(2008, 2, 14, 00, 31, 12).send(:to_datetime)
       end
 
     end
