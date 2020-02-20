@@ -53,7 +53,6 @@ Gem::Specification.new do |s|
     "tasks/spec.rake"
   ]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{dorb}
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{DataObjects SQL Server Driver}
   s.test_files = [

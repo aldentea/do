@@ -91,7 +91,7 @@ shared_examples_for 'a Reader' do
     describe 'on an open reader' do
 
       it 'should return true' do
-        @reader.close.should be_true
+        @reader.close.should be true
       end
 
     end
@@ -103,7 +103,7 @@ shared_examples_for 'a Reader' do
       end
 
       it 'should return false' do
-        @reader.close.should be_false
+        @reader.close.should be false
       end
 
     end
@@ -117,7 +117,7 @@ shared_examples_for 'a Reader' do
     describe 'successfully moving the cursor initially' do
 
       it 'should return true' do
-        @reader.next!.should be_true
+        @reader.next!.should be true
       end
 
     end
@@ -143,7 +143,7 @@ shared_examples_for 'a Reader' do
       end
 
       it 'should return false when the end is reached' do
-        @reader.next!.should be_false
+        @reader.next!.should be false
       end
 
     end

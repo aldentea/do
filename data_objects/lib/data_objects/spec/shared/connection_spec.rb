@@ -65,7 +65,7 @@ shared_examples_for 'a Connection' do
       it 'dispose should be true' do
         conn = DataObjects::Connection.new(CONFIG.uri)
         conn.detach
-        conn.dispose.should be_true
+        conn.dispose.should be true
         conn.close
       end
 
@@ -84,7 +84,7 @@ shared_examples_for 'a Connection' do
         @closed_connection = nil
       end
 
-      it { @closed_connection.dispose.should be_false }
+      it { @closed_connection.dispose.should be false }
 
       it 'should raise an error on creating a command' do
         expect {
@@ -158,7 +158,7 @@ shared_examples_for 'a Connection with SSL support' do
 
       it 'should connect securely' do
         conn = DataObjects::Connection.new("#{CONFIG.uri}?#{CONFIG.ssl}")
-        conn.secure?.should be_true
+        conn.secure?.should be true
         conn.close
       end
 
@@ -169,7 +169,7 @@ shared_examples_for 'a Connection with SSL support' do
 
     it 'should not connect securely' do
       conn = DataObjects::Connection.new(CONFIG.uri)
-      conn.secure?.should be_false
+      conn.secure?.should be false
       conn.close
     end
 

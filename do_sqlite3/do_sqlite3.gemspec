@@ -57,7 +57,6 @@ Gem::Specification.new do |s|
     "tasks/spec.rake"
   ]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{dorb}
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{DataObjects Sqlite3 Driver}
   s.test_files = [
@@ -89,16 +88,16 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<data_objects>, ["= 0.10.17"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_development_dependency(%q<rspec>)
       s.add_development_dependency(%q<rake-compiler>, ["~> 0.7"])
     else
       s.add_dependency(%q<data_objects>, ["= 0.10.17"])
-      s.add_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_dependency(%q<rspec>)
       s.add_dependency(%q<rake-compiler>, ["~> 0.7"])
     end
   else
     s.add_dependency(%q<data_objects>, ["= 0.10.17"])
-    s.add_dependency(%q<rspec>, ["~> 2.5"])
+    s.add_dependency(%q<rspec>)
     s.add_dependency(%q<rake-compiler>, ["~> 0.7"])
   end
 end
