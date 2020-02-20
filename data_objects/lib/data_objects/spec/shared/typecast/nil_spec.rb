@@ -73,7 +73,7 @@ shared_examples_for 'supporting writing an Nil' do
       end
 
       it 'should return the correct entry' do
-        @reader.next!.should be_false
+        @reader.next!.should be false
       end
 
     end

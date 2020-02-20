@@ -96,7 +96,7 @@ shared_examples_for 'supporting String' do
 
       it 'should write a multibyte String' do
         @command = @connection.create_command('INSERT INTO users (name) VALUES(?)')
-        expect { @command.execute_non_query(name) }.not_to raise_error(DataObjects::DataError)
+        expect { @command.execute_non_query(name) }.not_to raise_error
       end
 
       it 'should read back the multibyte String' do
@@ -109,7 +109,7 @@ shared_examples_for 'supporting String' do
 
       it 'should write a multibyte String (without query parameters)' do
         @command = @connection.create_command("INSERT INTO users (name) VALUES(#{@n}\'#{name}\')")
-        expect { @command.execute_non_query }.not_to raise_error(DataObjects::DataError)
+        expect { @command.execute_non_query }.not_to raise_error
       end
 
       it 'should read back the multibyte String (without query parameters)' do

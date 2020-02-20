@@ -120,7 +120,7 @@ shared_examples_for 'supporting Float autocasting' do
 
       it 'should return the correct result' do
         @values.first.should == 13.4
-        BigDecimal.new(@values.last.to_s).round(2).should == 10.23
+        BigDecimal(@values.last.to_s).round(2).should == 10.23
       end
 
     end
