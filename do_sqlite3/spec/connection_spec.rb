@@ -23,12 +23,11 @@ describe DataObjects::Sqlite3::Connection do
     describe 'connecting with busy timeout' do
 
       it 'connects with a valid timeout' do
-        DataObjects::Connection.new("#{CONFIG.uri}?busy_timeout=200").should_not be_nil
+        expect(DataObjects::Connection.new("#{CONFIG.uri}?busy_timeout=200")).not_to be_nil
       end
 
       it 'raises an error when passed an invalid value' do
-        lambda { DataObjects::Connection.new("#{CONFIG.uri}?busy_timeout=stuff") }.
-          should raise_error(ArgumentError)
+        expect { DataObjects::Connection.new("#{CONFIG.uri}?busy_timeout=stuff") }.to raise_error(ArgumentError)
       end
 
     end
