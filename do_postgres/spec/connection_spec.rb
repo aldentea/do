@@ -36,15 +36,15 @@ describe DataObjects::Postgres::Connection do
     # http://developer.postgresql.org/pgdocs/postgres/datatype-binary.html
     # http://developer.postgresql.org/pgdocs/postgres/release-9-0.html (E.3.2.3.)
     it 'should properly escape non-printable ASCII characters' do
-      ["'\\001'", "'\\x01'"].should include @connection.quote_byte_array("\001")
+      expect(["'\\001'", "'\\x01'"]).to include @connection.quote_byte_array("\001")
     end
 
     it 'should properly escape bytes with the high bit set' do
-      ["'\\210'", "'\\x88'"].should include @connection.quote_byte_array("\210")
+      expect(["'\\210'", "'\\x88'"]).to include @connection.quote_byte_array("\210")
     end
 
     it 'should not escape printable ASCII characters' do
-      ["'a'", "'\\x61'"].should include @connection.quote_byte_array("a")
+      expect(["'a'", "'\\x61'"]).to include @connection.quote_byte_array("a")
     end
   end
 end

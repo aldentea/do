@@ -21,29 +21,29 @@ describe DataObjects::Postgres::Result do
       @connection.close
     end
 
-    it { @result.should respond_to(:affected_rows) }
+    it { expect(@result).to respond_to(:affected_rows) }
 
     describe 'affected_rows' do
 
       it 'should return the number of created rows' do
-        @result.affected_rows.should == 1
+        expect(@result.affected_rows).to eq 1
       end
 
     end
 
-    it { @result.should respond_to(:insert_id) }
+    it { expect(@result).to respond_to(:insert_id) }
 
     describe 'insert_id' do
 
       it 'should return nil' do
-        @result.insert_id.should be_nil
+        expect(@result.insert_id).to be_nil
       end
 
       it 'should be retrievable through curr_val' do
         # This is actually the 4th record inserted
         reader = @connection.create_command("SELECT currval('users_id_seq')").execute_reader
         reader.next!
-        reader.values.first.should == 1
+        expect(reader.values.first).to eq 1
       end
 
     end
@@ -61,22 +61,22 @@ describe DataObjects::Postgres::Result do
       @connection.close
     end
 
-    it { @result.should respond_to(:affected_rows) }
+    it { expect(@result).to respond_to(:affected_rows) }
 
     describe 'affected_rows' do
 
       it 'should return the number of created rows' do
-        @result.affected_rows.should == 1
+        expect(@result.affected_rows).to eq 1
       end
 
     end
 
-    it { @result.should respond_to(:insert_id) }
+    it { expect(@result).to respond_to(:insert_id) }
 
     describe 'insert_id' do
 
       it 'should return the generated key value' do
-        @result.insert_id.should == 1
+        expect(@result.insert_id).to eq 1
       end
 
     end

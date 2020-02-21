@@ -24,21 +24,21 @@ describe DataObjects::Postgres::Command do
 
     it "should work with a writable CTE acting as an Upsert" do
       reader = @select_command.execute_reader
-      reader.to_a.size.should == 0
+      expect(reader.to_a.size)to eq 0
       reader.close
 
       @upsert_command.execute_non_query('jwkoelewijn')
 
       reader = @select_command.execute_reader
       reader.next!
-      reader.values[0].should == 'dbussink'
+      expect(reader.values[0]).to eq 'dbussink'
       reader.close
 
       @upsert_command.execute_non_query('jwkoelewijn')
 
       reader = @select_command.execute_reader
       reader.next!
-      reader.values[0].should == 'jwkoelewijn'
+      expect(reader.values[0]).to eq 'jwkoelewijn'
       reader.close
     end
   end

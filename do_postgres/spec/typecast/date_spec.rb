@@ -25,7 +25,7 @@ describe 'DataObjects::Postgres with Date' do
     end
 
     it 'should return the number of created rows' do
-      @values.first.should == Date.civil(1, 1, 1)
+      expect(@values.first).to eq Date.civil(1, 1, 1)
     end
 
   end
