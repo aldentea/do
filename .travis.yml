@@ -3,12 +3,14 @@ language: ruby
 
 services:
   - mysql
+  - postgresql
 
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y postgresql-server-dev-all
   - mysql -e 'CREATE DATABASE IF NOT EXISTS do_test;'
-
+  - psql -c 'create database do_test;' -U postgres
+  
 rvm:
   - 1.8.7
   - 1.9.3
