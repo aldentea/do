@@ -91,7 +91,7 @@ shared_examples_for 'a Reader' do
     describe 'on an open reader' do
 
       it 'should return true' do
-        expect(@reader.close) be_truthy
+	      expect(@reader.close).to be_truthy
       end
 
     end
@@ -103,7 +103,7 @@ shared_examples_for 'a Reader' do
       end
 
       it 'should return false' do
-        expect(@reader.close) be_falsey
+	      expect(@reader.close).to be_falsey
       end
 
     end
