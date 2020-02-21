@@ -21,12 +21,12 @@ describe DataObjects::Mysql::Reader do
 
     describe 'showing correct column field names for a table' do
       let(:sql)     { 'SHOW COLUMNS FROM `widgets`' }
-      its(:fields)  { should == [ "Field", "Type", "Null", "Key", "Default", "Extra" ] }
+      it { expect(subject.fields).to eq [ "Field", "Type", "Null", "Key", "Default", "Extra" ] }
     end
 
     describe 'showing correct column field names for variables' do
       let(:sql)     { "SHOW VARIABLES LIKE 'character_set_connection'" }
-      its(:fields)  { should == [ 'Variable_name', 'Value' ] }
+      it { expect(subject.fields).to eq [ 'Variable_name', 'Value' ] }
     end
 
   end

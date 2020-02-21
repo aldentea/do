@@ -110,30 +110,30 @@ shared_examples_for 'a Connection with authentication support' do
     # FIXME JRuby (and MRI): Should these be ArgumentError or DataObjects::SQLError?
 
     def connecting_with(uri)
-      lambda { DataObjects::Connection.new(uri) }
+      DataObjects::Connection.new(uri)
     end
 
     it 'should raise an error if bad username is given' do
       expect { connecting_with("#{@driver}://thisreallyshouldntexist:#{@password}@#{@host}:#{@port}#{@database}")}.to raise_error{ |error|
-        expect(error).to is_a(ArgumentError).or is_a(DataObjects:Error)
+        expect(error).to be_a_kind_of(ArgumentError).or be_a_kind_of(DataObjects::Error)
       } #(ArgumentError, DataObjects::Error)
     end
 
     it 'should raise an error if bad password is given' do
       expect { connecting_with("#{@driver}://#{@user}:completelyincorrectpassword:#{@host}:#{@port}#{@database}")}.to raise_error{ |error|
-        expect(error).to is_a(ArgumentError).or is_a(DataObjects:Error)
+        expect(error).to be_a_kind_of(ArgumentError).or be_a_kind_of(DataObjects::Error)
       } #(ArgumentError, DataObjects::Error)
     end
 
     it 'should raise an error if an invalid port is given' do
       expect { connecting_with("#{@driver}://#{@user}:#{@password}:#{@host}:648646543#{@database}")}.to raise_error{ |error|
-        expect(error).to is_a(ArgumentError).or is_a(DataObjects:Error)
+        expect(error).to be_a_kind_of(ArgumentError).or be_a_kind_of(DataObjects::Error)
       } #(ArgumentError, DataObjects::Error)
     end
 
     it 'should raise an error if an invalid database is given' do
-      expect { connecting_with("#{@driver}://#{@user}:#{@password}:#{@host}:#{@port}/someweirddatabase")}.to raise_error{ |error|
-        expect(error).to is_a(ArgumentError).or is_a(DataObjects:Error)
+	expect { connecting_with("#{@driver}://#{@user}:#{@password}:#{@host}:#{@port}/someweirddatabase")}.to raise_error{ |error|
+		    expect(error).to be_a_kind_of(ArgumentError).or be_a_kind_of(DataObjects::Error)
       } #(ArgumentError, DataObjects::Error)
     end
 

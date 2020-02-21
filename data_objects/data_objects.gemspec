@@ -99,16 +99,16 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<addressable>, ["~> 2.1"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_development_dependency(%q<rspec>, ["~> 3.9"])
       s.add_development_dependency(%q<yard>, ["~> 0.5"])
     else
       s.add_dependency(%q<addressable>, ["~> 2.1"])
-      s.add_dependency(%q<rspec>, ["~> 2.5"])
+      s.add_dependency(%q<rspec>, ["~> 3.9"])
       s.add_dependency(%q<yard>, ["~> 0.5"])
     end
   else
     s.add_dependency(%q<addressable>, ["~> 2.1"])
-    s.add_dependency(%q<rspec>, ["~> 2.5"])
+    s.add_dependency(%q<rspec>, ["~> 3.9"])
     s.add_dependency(%q<yard>, ["~> 0.5"])
   end
 end
