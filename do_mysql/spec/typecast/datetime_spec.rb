@@ -27,7 +27,7 @@ describe 'DataObjects::Mysql with DateTime' do
     end
 
     it 'should return the number of created rows' do
-      @values.first.should be_nil
+      expect(@values.first).to be_nil
     end
 
   end

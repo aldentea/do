@@ -21,7 +21,7 @@ describe DataObjects::Mysql::Connection do
       describe 'writing a multibyte String' do
         it 'should write a multibyte String' do
           @command = @utf8mb4_connection.create_command('INSERT INTO users_mb4 (name) VALUES(?)')
-          expect { @command.execute_non_query("😀") }.not_to raise_error(DataObjects::DataError)
+          expect { @command.execute_non_query("😀") }.not_to raise_error
         end
       end
 
