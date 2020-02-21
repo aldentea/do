@@ -1,3 +1,14 @@
+
+language: ruby
+
+services:
+  - mysql
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y postgresql-server-dev-all
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS do_test;'
+
 rvm:
   - 1.8.7
   - 1.9.3
@@ -9,7 +20,7 @@ rvm:
   - 2.5.7
   - 2.6.5
   - 2.7.0
-  - rbx-2
+  - rbx-3
   - ree
   - jruby-18mode
   - jruby-19mode
@@ -18,11 +29,10 @@ matrix:
     - rvm: 2.2.10
     - rvm: 2.1.8
     - rvm: 2.0.0
-    - rvm: 1.9.2
+    - rvm: 1.9.3
     - rvm: 1.8.7
+    - rvm: rbx-3
     - rvm: ree
     - rvm: jruby-18mode
     - rvm: jruby-19mode
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y postgresql-server-dev-all
+
